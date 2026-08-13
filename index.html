@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#0b8f9c">
+<title>STU48 - 瀬戸内のキミと。</title>
+<style>
+:root{--teal:#0b909d;--teal2:#65c8c4;--pink:#e97b9e;--gold:#e7b85c;--nav:#123e45;--bg:#edf8f9;--ink:#17383d;--muted:#6c858a;--line:#d9eeee}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Noto Sans JP","Helvetica Neue",sans-serif}
+body{min-height:100vh}.app{max-width:760px;margin:auto;min-height:100vh;background:#fff;box-shadow:0 0 30px #0001}
+.top{position:sticky;top:0;z-index:30;color:#fff;background:linear-gradient(135deg,#078d9a,#6cc9c5);padding:11px 14px;padding-top:calc(11px + env(safe-area-inset-top));box-shadow:0 2px 12px #0002}
+.toprow{display:flex;align-items:center;justify-content:space-between;gap:10px}.brand{font-size:17px;font-weight:800}.sub{font-size:9px;opacity:.85;margin-top:2px}.resources{display:flex;gap:6px;font-size:11px;white-space:nowrap}.pill{background:#ffffff28;border:1px solid #ffffff44;border-radius:99px;padding:5px 7px}
+main{padding:13px 13px calc(76px + env(safe-area-inset-bottom))}
+.screen{display:none}.screen.on{display:block}
+.hero{border-radius:22px;min-height:190px;background:linear-gradient(135deg,#c9eef0,#fff 55%,#d9f1f0);display:grid;place-items:center;position:relative;overflow:hidden}.hero:after{content:"";position:absolute;left:-20%;bottom:-45px;width:140%;height:100px;background:#ffffff99;border-radius:50%}.heroemoji{font-size:78px;z-index:1}
+.box{background:#fff;border:1px solid var(--line);border-radius:17px;padding:14px;margin:9px 0;box-shadow:0 4px 18px #087f8b0b}
+h1,h2,h3,p{margin-top:0}h2{font-size:21px;margin-bottom:7px}h3{font-size:16px;margin-bottom:6px}.small{font-size:11px;color:var(--muted);line-height:1.65}.center{text-align:center}
+button{font:inherit;border:0;border-radius:12px;padding:12px 13px;width:100%;margin:4px 0;background:var(--teal);color:#fff;font-weight:750;box-shadow:0 2px 0 #056b75}
+button:active{transform:translateY(1px);box-shadow:none}button.light{background:#e8f4f5;color:#245e65;box-shadow:none}button.pink{background:var(--pink);box-shadow:0 2px 0 #bd5d7b}button.gold{background:var(--gold);color:#4e3b12;box-shadow:0 2px 0 #b88b2e}button.dark{background:var(--nav)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.member{display:flex;align-items:center;gap:10px}.avatar{width:56px;height:56px;flex:none;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#e1f5f5,#fff);border:1px solid #cfe7e8;font-size:25px}.info{flex:1;min-width:0}.info b{display:block}.tag{display:inline-block;background:#edf7f7;color:#27727a;border-radius:99px;padding:3px 7px;font-size:9px;margin-top:4px}
+.status{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.stat{background:#f4fafb;border-radius:12px;padding:8px 5px;text-align:center}.stat b{font-size:17px;display:block}.stat span{font-size:9px;color:var(--muted)}
+.bar{height:7px;background:#dfebec;border-radius:99px;overflow:hidden;margin-top:4px}.fill{height:100%;background:var(--pink);width:0}
+.sectiontitle{display:flex;justify-content:space-between;align-items:center;margin:13px 2px 6px}.sectiontitle b{font-size:15px}
+.story{font-size:15px;line-height:1.9}.scene{font-size:10px;color:#0a818b;font-weight:800;margin-bottom:4px}.choice{text-align:left;background:#fff;color:#235e65;border:2px solid #cce3e5;box-shadow:none;line-height:1.45}
+.chat{display:flex;margin:7px 0}.bubble{max-width:88%;background:#edf7f7;border-radius:15px;padding:10px 12px;font-size:13px;line-height:1.55}.bubble.me{margin-left:auto;background:#dff3e3}
+.card{position:relative;overflow:hidden;min-height:140px;background:linear-gradient(145deg,#fff,#eefafa)}.card.ssr{border:2px solid var(--gold);background:linear-gradient(145deg,#fff8df,#fff,#e8f8f7)}.card .big{font-size:48px}.rarity{font-size:10px;color:#9b741c;font-weight:800}.cardname{font-weight:800;margin-top:3px}.cardgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.cardgrid .box{margin:0}
+.tabbar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(760px,100%);z-index:25;background:#fff;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);padding:7px 6px calc(7px + env(safe-area-inset-bottom));box-shadow:0 -4px 15px #0001}.tabbar button{margin:0;padding:8px 2px;font-size:9px;background:#fff;color:#587176;box-shadow:none}.tabbar button.active{color:var(--teal);font-weight:900}
+.progress{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:5px}
+.modal{position:fixed;inset:0;background:#0007;z-index:60;display:none;align-items:flex-end;justify-content:center}.modal.on{display:flex}.modalbox{width:min(760px,100%);max-height:82vh;overflow:auto;background:#fff;border-radius:22px 22px 0 0;padding:18px 15px calc(20px + env(safe-area-inset-bottom))}
+.toast{position:fixed;left:50%;bottom:83px;transform:translateX(-50%);background:#17383d;color:#fff;border-radius:99px;padding:9px 14px;font-size:12px;z-index:80;box-shadow:0 7px 25px #0003}.hidden{display:none!important}
+input{width:100%;font:inherit;padding:11px;border:1px solid #cfe4e5;border-radius:11px}.notice{background:#fff7df;border:1px solid #f0d68b;border-radius:12px;padding:9px;font-size:10px;color:#6d561e;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top"><div class="toprow">
+<div><div class="brand">STU48 - 瀬戸内のキミと。</div><div class="sub">Fan-made WEB romance simulation</div></div>
+<div class="resources"><span class="pill">⚡<b id="apTop">30</b></span><span class="pill">💎<b id="coinTop">300</b></span><button class="pill" style="width:auto;margin:0;padding:5px 8px;background:#ffffff28;color:#fff;box-shadow:none" onclick="toggleBGM()" id="bgmBtn">🎵OFF</button></div>
+</div></header>
+
+<main>
+<section id="title" class="screen on">
+<div class="hero"><div class="heroemoji">🌊</div></div>
+<div class="box center"><h2>瀬戸内で、キミと。</h2><p>放課後、海、ステージ。<br>あなたと彼女の物語が始まる。</p><div class="notice">実在メンバーを題材にした非公式ファンメイド作品です。ゲーム内の会話・性格・出来事は創作です。</div></div>
+<button onclick="startNew()">▶ はじめる</button><button class="light" onclick="loadSave()">↻ つづきから</button>
+<div class="grid2"><button class="light" onclick="openHelp()">遊び方</button><button class="light" onclick="openSettings()">設定</button></div>
+</section>
+
+<section id="select" class="screen">
+<h2>推しメンを選択</h2><p class="small">好きなメンバーを選んで専用ルートを始めよう。共通ストーリー10話＋メンバー別エピソードを収録。</p>
+<div id="memberList"></div><button class="light" onclick="go('title')">戻る</button>
+</section>
+
+<section id="game" class="screen">
+<div class="box member"><div class="avatar" id="heroIcon"></div><div class="info"><b id="heroName"></b><div class="small" id="heroType"></div><span class="tag" id="chapterTag"></span></div></div>
+<div class="status">
+<div class="stat">💗<b id="love">0</b><span>親密度</span></div>
+<div class="stat">⭐<b id="trust">0</b><span>信頼度</span></div>
+<div class="stat">⚡<b id="ap">30</b><span>行動力</span></div>
+<div class="stat">💎<b id="coins">300</b><span>コイン</span></div>
+</div>
+<div id="gameContent"></div>
+</section>
+
+<section id="home" class="screen"></section>
+<section id="end" class="screen">
+<div class="hero"><div class="heroemoji" id="endEmoji">💌</div></div>
+<div class="box center"><h2 id="endTitle"></h2><p id="endText"></p><p id="endResult"></p></div>
+<button onclick="replayRoute()">このルートをもう一度</button><button class="light" onclick="startNew()">別メンバーで遊ぶ</button><button class="light" onclick="go('title')">タイトルへ</button>
+</section>
+</main>
+
+<nav class="tabbar" id="nav" style="display:none">
+<button id="tHome" onclick="renderHome()">🏠<br>ホーム</button>
+<button id="tStory" onclick="renderStory()">📖<br>物語</button>
+<button id="tLesson" onclick="renderLesson()">🎤<br>レッスン</button>
+<button id="tGacha" onclick="renderGacha()">🃏<br>ガチャ</button>
+<button id="tCard" onclick="renderCards()">💎<br>カード</button>
+</nav>
+</div>
+
+<div class="modal" id="modal"><div class="modalbox"><div id="modalContent"></div><button class="light" onclick="closeModal()">閉じる</button></div></div>
+<div class="toast hidden" id="toast"></div>
+
+<script>
+"use strict";
+
+const MEMBERS=[
+["新井 梨杏","🌸","ゲーム内設定：素直で前向き"],
+["岡田 あずみ","🫧","ゲーム内設定：落ち着いた雰囲気"],
+["岡村 梨央","🍀","ゲーム内設定：親しみやすい"],
+["尾崎 世里花","🌷","ゲーム内設定：大人っぽい"],
+["甲斐 心愛","❤️","ゲーム内設定：まっすぐ"],
+["久留島 優果","🌼","ゲーム内設定：明るく距離が近い"],
+["高雄 さやか","🌙","ゲーム内設定：クール"],
+["中村 舞","💎","ゲーム内設定：頼れる"],
+["濵田 響","🎧","ゲーム内設定：音楽好き"],
+["原田 清花","🌺","ゲーム内設定：柔らかな雰囲気"],
+["兵頭 葵","🍵","ゲーム内設定：穏やか"],
+["福田 朱里","🎀","ゲーム内設定：しっかり者"],
+["森末 妃奈","🌿","ゲーム内設定：ふんわり"],
+["吉田 彩良","✨","ゲーム内設定：マイペース"],
+["島田 紗香","🌻","ゲーム内設定：元気"],
+["曽我部 あこ","🪻","ゲーム内設定：ちょっと不思議"]
+];
+
+const STORIES=[
+["第1話　偶然の出会い","放課後・校門","授業を終えて帰ろうとしたあなたの前に、彼女が現れた。\\n「ねえ、今日ってこのあと時間ある？」"],
+["第2話　海辺の約束","夕方・瀬戸内","二人で海辺を歩く。潮風に吹かれながら、彼女がふっと笑った。\\n「こういう時間、好きかも」"],
+["第3話　秘密のメッセージ","夜・スマホ","帰宅すると通知が一件。\\n『今日はありがとう。明日も少しだけ話せる？』"],
+["第4話　レッスン","午後・練習室","レッスンを見学するあなたに、彼女が手を振った。\\n「ちゃんと見ててね。今日、頑張るから」"],
+["第5話　雨上がり","夕方・商店街","突然の雨。軒下で二人きりになる。\\n「雨が止むまで……もう少し一緒にいよ」"],
+["第6話　ステージの光","夜・ライブ会場","ステージの上から彼女が客席を見つめる。終演後、目が合った。\\n「見つけたよ」"],
+["第7話　すれ違い","夜・駅前","忙しさのせいで連絡が少なくなった。あなたが気にしていると、彼女から電話が来る。\\n「……怒ってる？」"],
+["第8話　大切なもの","休日・海辺","彼女は海を眺めながら話す。\\n「私、ここで頑張ってきたこと、全部大事にしたい」"],
+["第9話　告白前夜","夕暮れ・展望台","彼女があなたをまっすぐ見る。\\n「明日じゃなくて、今聞いてもいい？」"],
+["第10話　瀬戸内の夕日","最終話","夕日が海に溶けていく。彼女は少し緊張した顔で、あなたの返事を待っている。"]
+];
+
+const LESSONS=[
+["ボーカルレッスン","歌の練習を手伝う。","💗+2 ⭐+1",2,1],
+["ダンスレッスン","振り付けを一緒に確認する。","💗+1 ⭐+3",1,3],
+["自主練習","黙々と練習を見守る。","⭐+2",0,2],
+["差し入れ","頑張っている彼女へ差し入れ。","💗+3",3,0]
+];
+
+const CARD_POOL=[
+["🌊","瀬戸内の休日","R",1,2],["🎤","ステージ前","R",2,1],["📱","秘密のメッセージ","SR",4,3],
+["🌅","夕暮れの約束","SR",5,4],["💖","特別な一枚","SSR",8,7],["✨","きらめくステージ","SSR",10,9]
+];
+
+let S={
+ member:0,player:"あなた",love:0,trust:0,ap:30,maxAp:30,coins:300,chapter:0,
+ cards:[],gems:0,lessonCount:0,messages:0,end:"",daily:0
+};
+
+const $=id=>document.getElementById(id);
+const mem=()=>MEMBERS[S.member];
+
+function go(id){
+ document.querySelectorAll(".screen").forEach(x=>x.classList.remove("on"));
+ $(id).classList.add("on");window.scrollTo(0,0);
+ $("nav").style.display=(id==="game"?"grid":"none");
+}
+function toast(t){$("toast").textContent=t;$("toast").classList.remove("hidden");clearTimeout(window.__tt);window.__tt=setTimeout(()=>$("toast").classList.add("hidden"),1700)}
+function startNew(){ startRichBGM();
+ S={member:0,player:localStorage.getItem("stuName")||"あなた",love:0,trust:0,ap:30,maxAp:30,coins:300,chapter:0,cards:[],gems:0,lessonCount:0,messages:0,end:"",daily:0};
+ renderMembers();go("select");
+}
+function renderMembers(){
+ $("memberList").innerHTML=MEMBERS.map((m,i)=>`
+ <div class="box member"><div class="avatar">${m[1]}</div><div class="info"><b>${m[0]}</b><div class="small">${m[2]}</div></div>
+ <button style="width:auto;margin:0" onclick="chooseMember(${i})">選ぶ</button></div>`).join("");
+}
+function chooseMember(i){
+ S.member=i;S.love=0;S.trust=0;S.ap=30;S.coins=300;S.chapter=0;S.cards=[];S.gems=0;S.lessonCount=0;S.messages=0;S.end="";
+ save();renderHome();
+}
+function updateTop(){
+ $("apTop").textContent=S.ap;$("coinTop").textContent=S.coins;
+}
+function stats(){
+ $("love").textContent=S.love;$("trust").textContent=S.trust;$("ap").textContent=S.ap;$("coins").textContent=S.coins;updateTop();
+}
+function renderHome(){ switchRichBGM("member");
+ go("game");stats();setTab("tHome");
+ $("gameContent").innerHTML=`
+ <div class="hero"><div class="heroemoji">${mem()[1]}</div></div>
+ <div class="box"><h3>今日のおすすめ</h3><p>彼女との距離をもっと近づけよう。</p>
+ <div class="grid2"><button onclick="renderStory()">📖物語を進める</button><button class="pink" onclick="renderLesson()">🎤レッスン</button></div></div>
+ <div class="box"><h3>親密度</h3><div class="small">次のストーリー解放まで</div><div class="bar"><div class="fill" style="width:${Math.min(100,S.love/40*100)}%"></div></div>
+ <div class="small">💗 ${S.love} / 40　⭐ ${S.trust}</div></div>
+ <div class="grid2"><button class="light" onclick="renderChat()">💬メッセージ</button><button class="gold" onclick="renderGacha()">🃏ガチャ</button></div>
+ <div class="notice">APはレッスンなどで消費します。時間経過による自動回復は簡易版として実装しています。</div>`;
+}
+function setTab(id){document.querySelectorAll(".tabbar button").forEach(x=>x.classList.remove("active"));$(id).classList.add("active")}
+function renderStory(){ switchRichBGM("member");
+ go("game");stats();setTab("tStory");
+ if(S.chapter>=STORIES.length){showEnding();return}
+ const st=STORIES[S.chapter];
+ const locked=S.chapter>0 && S.love < S.chapter*2;
+ if(locked){
+  $("gameContent").innerHTML=`<div class="box center"><h3>🔒 次の話はまだ解放されていません</h3><p>💗親密度 ${S.chapter*2} 以上が必要です。現在 ${S.love}</p><button onclick="renderLesson()">🎤レッスンへ</button></div>`;
+  return;
+ }
+ $("gameContent").innerHTML=`
+ <div class="progress"><span>${S.chapter+1} / ${STORIES.length}</span><span>ストーリー</span></div>
+ <div class="box story"><div class="scene">${st[1]}</div><p>${st[2].replace(/\\n/g,"<br>")}</p></div>
+ <div class="sectiontitle"><b>どうする？</b></div>
+ <button class="choice" onclick="storyChoice(0)">「うん、話そう」</button>
+ <button class="choice" onclick="storyChoice(1)">「今日は大丈夫？」</button>
+ <button class="choice" onclick="storyChoice(2)">「次の予定を聞く」</button>
+ <div class="box small">選択によって 💗親密度 と ⭐信頼度 が変化します。</div>`;
+}
+function storyChoice(n){
+ sfx("tap");
+ if(S.ap<2){toast("APが足りません。レッスン画面で回復できます");return}
+ S.ap-=2;
+ const gains=[[4,2],[2,4],[3,3]][n];
+ S.love+=gains[0];S.trust+=gains[1];S.coins+=8;
+ if(Math.random()<.45)addRandomCard(false);
+ S.chapter++;save();
+ sfx("love"); toast("💗+"+gains[0]+" ⭐+"+gains[1]);
+ if(S.chapter>=STORIES.length)showEnding();else renderStory();
+}
+function renderLesson(){
+ switchRichBGM("live"); go("game");stats();setTab("tLesson");
+ $("gameContent").innerHTML=`
+ <div class="box"><h2>🎤 レッスン</h2><p class="small">APを使って彼女との時間を増やそう。レッスン成功で親密度・信頼度を獲得。</p></div>
+ <div class="list">${LESSONS.map((x,i)=>`
+ <div class="box"><h3>${x[0]}</h3><p class="small">${x[1]}</p><p><b>${x[2]}</b></p>
+ <button onclick="doLesson(${i})">⚡AP ${i===3?5:4} で実行</button></div>`).join("")}</div>
+ <div class="box"><button class="light" onclick="recoverAP()">☀️ APを回復する</button></div>`;
+}
+function doLesson(i){
+ sfx("tap"); const cost=i===3?5:4;
+ if(S.ap<cost){toast("APが足りません");return}
+ S.ap-=cost;S.love+=LESSONS[i][3];S.trust+=LESSONS[i][4];S.coins+=5;S.lessonCount++;save();
+ sfx("love"); toast("レッスン成功！");
+ renderLesson();
+}
+function recoverAP(){
+ S.ap=Math.min(S.maxAp,S.ap+10);save();toast("⚡AP +10");renderLesson();
+}
+function renderGacha(){ switchRichBGM("home");
+ go("game");stats();setTab("tGacha");
+ $("gameContent").innerHTML=`
+ <div class="box center"><h2>🃏 思い出ガチャ</h2><p>彼女との思い出カードを集めよう。</p>
+ <div class="hero" style="min-height:130px"><div class="heroemoji">✨</div></div>
+ <p class="small">1回 50💎　5回 220💎<br>R / SR / SSRを収録</p>
+ <div class="grid2"><button onclick="gacha(1)">1回引く</button><button class="gold" onclick="gacha(5)">5回引く</button></div></div>
+ <div class="box"><h3>所持カード：${S.cards.length}枚</h3><p class="small">SSRは低確率。ストーリーでもカードを獲得できます。</p></div>`;
+}
+function gacha(n){
+ sfx("gacha"); const cost=n===1?50:220;if(S.coins<cost){toast("コインが足りません");return}
+ S.coins-=cost;let got=[];
+ for(let i=0;i<n;i++)got.push(addRandomCard(true));
+ save(); if(got.some(c=>c[2]==="SSR"))sfx("ssr"); showModal(`<h2>ガチャ結果</h2>${got.map(c=>`<div class="box card ${c[2]==="SSR"?"ssr":""}"><div class="big">${c[0]}</div><div class="rarity">${c[2]}</div><div class="cardname">${c[1]}</div><div class="small">親密度 +${c[3]} / 信頼度 +${c[4]}</div></div>`).join("")}`);
+}
+function addRandomCard(fromGacha){
+ let r=Math.random(),idx;
+ if(r<.08)idx=4+Math.floor(Math.random()*2);else if(r<.32)idx=2+Math.floor(Math.random()*2);else idx=Math.floor(Math.random()*2);
+ const c=CARD_POOL[idx];S.cards.push({icon:c[0],name:c[1],rarity:c[2],love:c[3],trust:c[4]});return c;
+}
+function renderCards(){ switchRichBGM("home");
+ go("game");stats();setTab("tCard");
+ const html=S.cards.length?S.cards.map(c=>`<div class="box card ${c.rarity==="SSR"?"ssr":""}"><div class="big">${c.icon}</div><div class="rarity">${c.rarity}</div><div class="cardname">${c.name}</div><div class="small">💗+${c.love} ⭐+${c.trust}</div></div>`).join(""):`<div class="box center"><h3>まだカードがありません</h3><p class="small">ストーリーやガチャで獲得できます。</p></div>`;
+ $("gameContent").innerHTML=`<div class="box"><h2>💎カードコレクション</h2><p class="small">${S.cards.length}枚獲得</p></div><div class="cardgrid">${html}</div>`;
+}
+function renderChat(){
+ go("game");stats();setTab("tHome");
+ $("gameContent").innerHTML=`
+ <div class="box"><h2>💬 メッセージ</h2>
+ <div class="chat"><div class="bubble"><b>${mem()[0]}</b><br>今日もお疲れさま。ちゃんと休んでる？</div></div>
+ <div class="chat"><div class="bubble me">${S.player}<br>大丈夫。そっちは？</div></div>
+ <div class="chat"><div class="bubble"><b>${mem()[0]}</b><br>私は平気。次に会えるの、楽しみにしてるね。</div></div></div>
+ <button onclick="replyMessage()">💌 返信する（💎10）</button>
+ <div class="box small">返信すると ⭐信頼度が上がります。</div>`;
+}
+function replyMessage(){
+ sfx("tap"); if(S.coins<10){toast("コインが足りません");return}
+ S.coins-=10;S.trust+=2;S.messages++;save();sfx("coin");toast("⭐信頼度 +2");renderChat();
+}
+function showEnding(){ switchRichBGM("end"); sfx("end");
+ let e;
+ if(S.love>=35&&S.trust>=35)e=["💖","特別エンディング","あなたの気持ちは、ちゃんと彼女に届いた。瀬戸内の夕日を眺めながら、二人はこれからの時間を約束した。"];
+ else if(S.love>=25&&S.trust>=25)e=["💌","ハッピーエンディング","二人の距離は確かに近づいた。帰り道、彼女から届いたメッセージには、次の約束が書かれていた。"];
+ else e=["🌅","また会おうエンディング","答えはまだ先。でも二人には、確かな時間が残った。次に会える日が楽しみだ。"];
+ S.end=e[1];save();$("endEmoji").textContent=e[0];$("endTitle").textContent=e[1];$("endText").textContent=e[2];$("endResult").innerHTML=`💗親密度 ${S.love}　⭐信頼度 ${S.trust}<br>🃏カード ${S.cards.length}　🎤レッスン ${S.lessonCount}回`;go("end");
+}
+function replayRoute(){
+ S.love=0;S.trust=0;S.ap=30;S.coins=300;S.chapter=0;S.cards=[];S.lessonCount=0;S.messages=0;S.end="";save();renderHome();
+}
+function save(){try{localStorage.setItem("stu48koi_complete_v4",JSON.stringify(S));localStorage.setItem("stuName",S.player)}catch(e){}}
+function loadSave(){
+ try{const x=localStorage.getItem("stu48koi_complete_v4");if(!x){toast("セーブデータがありません");return}S=JSON.parse(x);if(S.end)showEnding();else renderHome()}catch(e){toast("読み込みに失敗しました")}
+}
+function openHelp(){showModal(`<h2>遊び方</h2><div class="box">📖 <b>物語</b><br>全10話。選択肢で親密度・信頼度が変化します。</div><div class="box">🎤 <b>レッスン</b><br>APを消費して親密度・信頼度を育てます。</div><div class="box">🃏 <b>ガチャ</b><br>R / SR / SSRカードを集めます。</div><div class="box">💬 <b>メッセージ</b><br>コインを使って返信できます。</div><div class="box">💖 <b>エンディング</b><br>親密度・信頼度によって3種類に分岐します。</div>`)}
+function openSettings(){showModal(`<h2>設定</h2><label class="small">主人公名</label><input id="pname" maxlength="12" value="${S.player}"><button onclick="setPlayerName()">保存</button><p class="small">セーブはこのSafariのローカルストレージに保存されます。</p><button class="light" onclick="resetAll()">セーブデータ削除</button>`)}
+function setPlayerName(){S.player=$("pname").value.trim()||"あなた";localStorage.setItem("stuName",S.player);save();toast("主人公名を保存しました");closeModal()}
+function resetAll(){if(confirm("セーブデータを削除しますか？")){localStorage.removeItem("stu48koi_complete_v4");toast("削除しました");closeModal()}}
+function showModal(html){$("modalContent").innerHTML=html;$("modal").classList.add("on")}
+function closeModal(){$("modal").classList.remove("on")}
+$("modal").addEventListener("click",e=>{if(e.target.id==="modal")closeModal()});
+renderMembers();
+
+// ---- Original browser-native BGM ----
+// iPhone Safari blocks autoplay, so the first tap on "はじめる" or another control
+// starts the audio context. No external music file is required.
+let BGM={ctx:null,master:null,timer:null,step:0,on:false,mode:"title"};
+const BGM_PATTERNS={
+ title:[261.63,329.63,392.00,523.25,392.00,329.63,293.66,392.00],
+ home:[196.00,246.94,293.66,392.00,293.66,246.94,220.00,293.66],
+ story:[220.00,277.18,329.63,440.00,329.63,277.18,246.94,329.63],
+ end:[261.63,329.63,392.00,523.25,587.33,523.25,392.00,329.63]
+};
+function startBGM(){
+ try{
+  if(!BGM.ctx){
+   BGM.ctx=new (window.AudioContext||window.webkitAudioContext)();
+   BGM.master=BGM.ctx.createGain();
+   BGM.master.gain.value=.055;
+   BGM.master.connect(BGM.ctx.destination);
+  }
+  if(BGM.ctx.state==="suspended") BGM.ctx.resume();
+  if(!BGM.on){BGM.on=true; $("bgmBtn").textContent="🎵ON"; playBGMStep();}
+ }catch(e){}
+}
+function stopBGM(){
+ BGM.on=false;
+ if(BGM.timer) clearTimeout(BGM.timer);
+ if($("bgmBtn")) $("bgmBtn").textContent="🎵OFF";
+}
+function toggleBGM(){
+ if(BGM.on) stopBGM(); else startBGM();
+}
+function setBGMMode(mode){
+ BGM.mode=mode;
+ if(BGM.on && BGM.ctx && BGM.ctx.state==="suspended") BGM.ctx.resume();
+}
+function playTone(freq,dur,when,vol,type){
+ const o=BGM.ctx.createOscillator(),g=BGM.ctx.createGain();
+ o.type=type||"sine";o.frequency.value=freq;
+ g.gain.setValueAtTime(.0001,when);
+ g.gain.exponentialRampToValueAtTime(vol,when+.025);
+ g.gain.exponentialRampToValueAtTime(.0001,when+dur);
+ o.connect(g);g.connect(BGM.master);o.start(when);o.stop(when+dur+.04);
+}
+function playBGMStep(){
+ if(!BGM.on||!BGM.ctx)return;
+ const pat=BGM_PATTERNS[BGM.mode]||BGM_PATTERNS.title;
+ const now=BGM.ctx.currentTime;
+ const f=pat[BGM.step%pat.length];
+ playTone(f,.48,now,.13,"sine");
+ // soft fifth/pad for a more game-like ambience
+ if(BGM.step%2===0) playTone(f/2,.9,now,.035,"triangle");
+ BGM.step++;
+ BGM.timer=setTimeout(playBGMStep,520);
+}
+
+
+/* ===== Rich original game audio system ===== */
+const MEMBER_AUDIO=[
+  [261.63,329.63,392.00,523.25], [293.66,369.99,440.00,587.33],
+  [246.94,311.13,369.99,493.88], [277.18,349.23,415.30,554.37],
+  [220.00,277.18,329.63,440.00], [329.63,392.00,493.88,659.25],
+  [246.94,293.66,369.99,493.88], [293.66,349.23,440.00,587.33],
+  [261.63,311.13,392.00,523.25], [277.18,329.63,415.30,554.37],
+  [220.00,293.66,369.99,440.00], [293.66,369.99,440.00,554.37],
+  [246.94,329.63,392.00,493.88], [261.63,349.23,415.30,523.25],
+  [293.66,392.00,440.00,587.33], [277.18,369.99,415.30,554.37]
+];
+
+function audioReady(){
+  try{
+    if(!BGM.ctx){
+      BGM.ctx=new (window.AudioContext||window.webkitAudioContext)();
+      BGM.master=BGM.ctx.createGain(); BGM.master.gain.value=.055;
+      BGM.master.connect(BGM.ctx.destination);
+    }
+    if(BGM.ctx.state==="suspended") BGM.ctx.resume();
+    return true;
+  }catch(e){return false}
+}
+function sfx(kind){
+  if(!audioReady())return;
+  const now=BGM.ctx.currentTime;
+  const tone=(f,d,v=.08,type="sine",delay=0)=>{
+    const o=BGM.ctx.createOscillator(),g=BGM.ctx.createGain();
+    o.type=type;o.frequency.setValueAtTime(f,now+delay);
+    g.gain.setValueAtTime(.0001,now+delay);
+    g.gain.exponentialRampToValueAtTime(v,now+delay+.015);
+    g.gain.exponentialRampToValueAtTime(.0001,now+delay+d);
+    o.connect(g);g.connect(BGM.master);o.start(now+delay);o.stop(now+delay+d+.03);
+  };
+  if(kind==="tap") tone(740,.07,.045,"square");
+  if(kind==="love"){tone(523,.16,.07,"sine");tone(659,.20,.06,"sine",.08);tone(784,.28,.05,"sine",.17)}
+  if(kind==="coin"){tone(880,.09,.07,"triangle");tone(1175,.18,.06,"triangle",.09)}
+  if(kind==="gacha"){tone(392,.12,.05,"triangle");tone(523,.12,.06,"triangle",.12);tone(659,.18,.07,"triangle",.24);tone(1047,.35,.06,"sine",.36)}
+  if(kind==="ssr"){tone(523,.14,.07,"sine");tone(659,.14,.07,"sine",.12);tone(784,.14,.08,"sine",.24);tone(1047,.5,.09,"sine",.38);tone(1319,.55,.06,"triangle",.52)}
+  if(kind==="end"){tone(392,.22,.06,"sine");tone(523,.22,.07,"sine",.18);tone(659,.3,.07,"sine",.36);tone(784,.65,.06,"sine",.58)}
+  if(kind==="rain"){
+    const buf=BGM.ctx.createBuffer(1,BGM.ctx.sampleRate*.22,BGM.ctx.sampleRate);
+    const data=buf.getChannelData(0);for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1)*.035;
+    const n=BGM.ctx.createBufferSource(),g=BGM.ctx.createGain();n.buffer=buf;g.gain.value=.22;n.connect(g);g.connect(BGM.master);n.start();
+  }
+}
+function setRichMode(mode){
+  BGM.mode=mode;
+  if(BGM.on && audioReady()) BGM.step=0;
+}
+function richBgmStep(){
+  if(!BGM.on||!BGM.ctx)return;
+  const base=(MEMBER_AUDIO[S.member]||MEMBER_AUDIO[0]);
+  let pat;
+  if(BGM.mode==="member") pat=base;
+  else if(BGM.mode==="live") pat=[base[0]*2,base[2]*2,base[3]*2,base[2]*2,base[1]*2,base[3]*2,base[2]*2,base[0]*2];
+  else if(BGM.mode==="end") pat=[base[0],base[1],base[2],base[3],base[2],base[1],base[3],base[2]];
+  else pat=BGM_PATTERNS[BGM.mode]||BGM_PATTERNS.title;
+  const now=BGM.ctx.currentTime,f=pat[BGM.step%pat.length];
+  playTone(f,.43,now,.12,BGM.mode==="live"?"triangle":"sine");
+  if(BGM.step%2===0)playTone(f/2,.75,now,.028,"triangle");
+  BGM.step++;BGM.timer=setTimeout(richBgmStep,BGM.mode==="live"?390:520);
+}
+function startRichBGM(){
+  if(!audioReady())return;
+  if(!BGM.on){BGM.on=true;$("bgmBtn").textContent="🎵ON";richBgmStep()}
+}
+function switchRichBGM(mode){
+  BGM.mode=mode;
+  if(BGM.on){if(BGM.timer)clearTimeout(BGM.timer);BGM.step=0;richBgmStep()}
+}
+
+
+document.addEventListener("click",e=>{
+  const b=e.target.closest("button");
+  if(b && b.id!=="bgmBtn") sfx("tap");
+});
+</script>
+</body>
+</html>
