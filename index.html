@@ -278,7 +278,7 @@ function addRandomCard(fromGacha){
  if(r<.08)idx=4+Math.floor(Math.random()*2);else if(r<.32)idx=2+Math.floor(Math.random()*2);else idx=Math.floor(Math.random()*2);
  const c=CARD_POOL[idx];
  const isYuka=S.member===5 && c[2]==="SSR";
- const card={icon:c[0],name:isYuka?"優果・瀬戸内の一枚":c[1],rarity:c[2],love:c[3],trust:c[4],image:isYuka?"assets/cards/yuka_special.jpg":null};
+ const card={icon:c[0],name:isYuka?"優果・瀬戸内の一枚":c[1],rarity:c[2],love:c[3],trust:c[4],image:isYuka?"yuka.jpg":null};
  S.cards.push(card);return card;
 }
 function renderCards(){ useGameBGM("home");
@@ -543,12 +543,12 @@ function routeProfile(){return ROUTES[mem()[0]]||{flavor:"瀬戸内で少しず�
 */
 const ASSETS={
   music:{
-    title:"assets/music/title.wav", home:"assets/music/home.wav",
-    story:"assets/music/story.wav", member:"assets/music/member.wav",
-    live:"assets/music/live.wav", end:"assets/music/ending.wav"
+    title:"title.wav", home:"home.wav",
+    story:"story.wav", member:"member.wav",
+    live:"live.wav", end:"ending.wav"
   },
   members:{
-    5:{image:"assets/members/yuka.jpg"}
+    5:{image:"yuka.jpg"}
   }
 };
 let externalAudio=null, externalAudioPath="";
