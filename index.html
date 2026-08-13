@@ -31,6 +31,10 @@ button:active{transform:translateY(1px);box-shadow:none}button.light{background:
 .modal{position:fixed;inset:0;background:#0007;z-index:60;display:none;align-items:flex-end;justify-content:center}.modal.on{display:flex}.modalbox{width:min(760px,100%);max-height:82vh;overflow:auto;background:#fff;border-radius:22px 22px 0 0;padding:18px 15px calc(20px + env(safe-area-inset-bottom))}
 .toast{position:fixed;left:50%;bottom:83px;transform:translateX(-50%);background:#17383d;color:#fff;border-radius:99px;padding:9px 14px;font-size:12px;z-index:80;box-shadow:0 7px 25px #0003}.hidden{display:none!important}
 input{width:100%;font:inherit;padding:11px;border:1px solid #cfe4e5;border-radius:11px}.notice{background:#fff7df;border:1px solid #f0d68b;border-radius:12px;padding:9px;font-size:10px;color:#6d561e;line-height:1.6}
+
+.memberthumb{width:54px;height:54px;object-fit:cover;border-radius:50%}
+.storyphoto{display:block;width:100%;max-height:360px;object-fit:cover;border-radius:16px;margin:10px 0}
+.photo.smallphoto{width:100%;max-height:180px;object-fit:cover;border-radius:12px}
 </style>
 
 <style>
@@ -150,7 +154,7 @@ const CARD_POOL=[
 
 let S={
  member:0,player:"あなた",love:0,trust:0,ap:30,maxAp:30,coins:300,chapter:0,
- cards:[],gems:0,lessonCount:0,messages:0,end:"",daily:0
+ cards:[],gems:0,lessonCount:0,messages:0,end:"",daily:0,choices:{},routePoints:0
 };
 
 const $=id=>document.getElementById(id);
@@ -163,16 +167,16 @@ function go(id){
 }
 function toast(t){$("toast").textContent=t;$("toast").classList.remove("hidden");clearTimeout(window.__tt);window.__tt=setTimeout(()=>$("toast").classList.add("hidden"),1700)}
 function startNew(){ startRichBGM();
- S={member:0,player:localStorage.getItem("stuName")||"あなた",love:0,trust:0,ap:30,maxAp:30,coins:300,chapter:0,cards:[],gems:0,lessonCount:0,messages:0,end:"",daily:0};
+ S={member:0,player:localStorage.getItem("stuName")||"あなた",love:0,trust:0,ap:30,maxAp:30,coins:300,chapter:0,cards:[],gems:0,lessonCount:0,messages:0,end:"",daily:0,choices:{},routePoints:0};
  renderMembers();go("select");
 }
 function renderMembers(){
  $("memberList").innerHTML=MEMBERS.map((m,i)=>`
- <div class="box member"><div class="avatar">${m[1]}</div><div class="info"><b>${m[0]}</b><div class="small">${m[2]}</div><div class="small">💠専用ルートあり</div></div>
+ <div class="box member"><div class="avatar" style="overflow:hidden">${i===5?memberPhotoHTML(i,"memberthumb"):m[1]}</div><div class="info"><b>${m[0]}</b><div class="small">${m[2]}</div><div class="small">💠専用ルートあり</div></div>
  <button style="width:auto;margin:0" onclick="chooseMember(${i})">選ぶ</button></div>`).join("");
 }
 function chooseMember(i){
- S.member=i;S.love=0;S.trust=0;S.ap=30;S.coins=300;S.chapter=0;S.cards=[];S.gems=0;S.lessonCount=0;S.messages=0;S.end="";
+ S.member=i;S.love=0;S.trust=0;S.ap=30;S.coins=300;S.chapter=0;S.cards=[];S.gems=0;S.lessonCount=0;S.messages=0;S.end="";S.choices={};S.routePoints=0;
  save();renderHome();
 }
 function updateTop(){
@@ -192,7 +196,7 @@ function renderHome(){
  <div class="small">💗 ${S.love} / 40　⭐ ${S.trust}</div></div>
  <div class="grid2"><button class="light" onclick="renderChat()">💬メッセージ</button><button class="gold" onclick="renderGacha()">🃏ガチャ</button></div>
  <button class="pink" onclick="renderEvent()">🎫 期間限定イベント</button>
- <div class="notice">下のメニューからいつでもホーム・物語・レッスン・ガチャ・カードへ移動できます。</div><div class="box small"><b>🧩 素材追加対応</b><br>写真：assets/members/　BGM：assets/music/　カード：assets/cards/<br>ファイルを追加して assets/config.js を編集すると、ゲーム本体を作り直さず差し替えできます。</div>`;
+ <div class="notice">下のメニューからいつでもホーム・物語・レッスン・ガチャ・カードへ移動できます。</div><div class="box small"><b>🧩 素材追加対応</b><br>写真：assets/members/　BGM：assets/music/　カード：assets/cards/<br>写真：assets/members/　BGM：assets/music/　カード：assets/cards/<br>今回の優果さん写真は実際に組み込み済み。BGMはオリジナルWAVを同梱しています。</div>`;
 }
 function setTab(id){document.querySelectorAll(".tabbar button").forEach(x=>x.classList.remove("active"));$(id).classList.add("active")}
 function renderStory(){
@@ -214,6 +218,7 @@ function renderStory(){
  <div class="progress"><span>${S.chapter+1} / ${STORIES.length}</span><span>ストーリー</span></div>
  <div class="box story"><div class="scene">${st[1]}</div><p>${st[2].replace(/\\n/g,"<br>")}</p></div>
  <div class="box small">💠 ${rp.flavor}</div>
+ ${S.chapter>0 && S.choices[S.chapter-1]!==undefined ? `<div class="box small">💭 前の話であなたは「${STORIES[S.chapter-1][3][S.choices[S.chapter-1]][0]}」と答えた。彼女もその言葉を覚えている。</div>` : ""}
  <div class="sectiontitle"><b>あなたはどう答える？</b></div>
  <button class="choice" onclick="storyChoice(0)">💬 ${shown[0][0]}</button>
  <button class="choice" onclick="storyChoice(1)">💬 ${shown[1][0]}</button>
@@ -227,6 +232,8 @@ function storyChoice(n){
  S.ap-=2;
  const gains=[selected[1],selected[2]];
  S.love+=gains[0];S.trust+=gains[1];S.coins+=8;
+ S.choices[S.chapter]=n;
+ S.routePoints += (n===0?2:(n===1?1:0));
  if(Math.random()<.45)addRandomCard(false);
  S.chapter++;save();
  sfx("love"); toast("💗+"+gains[0]+" ⭐+"+gains[1]);
@@ -269,12 +276,28 @@ function gacha(n){
 function addRandomCard(fromGacha){
  let r=Math.random(),idx;
  if(r<.08)idx=4+Math.floor(Math.random()*2);else if(r<.32)idx=2+Math.floor(Math.random()*2);else idx=Math.floor(Math.random()*2);
- const c=CARD_POOL[idx];S.cards.push({icon:c[0],name:c[1],rarity:c[2],love:c[3],trust:c[4]});return c;
+ const c=CARD_POOL[idx];
+ const isYuka=S.member===5 && c[2]==="SSR";
+ const card={icon:c[0],name:isYuka?"優果・瀬戸内の一枚":c[1],rarity:c[2],love:c[3],trust:c[4],image:isYuka?"assets/cards/yuka_special.jpg":null};
+ S.cards.push(card);return card;
 }
 function renderCards(){ useGameBGM("home");
  go("game");stats();setTab("tCard");
  const html=S.cards.length?S.cards.map(c=>`<div class="box card ${c.rarity==="SSR"?"ssr":""}"><div class="big">${c.icon}</div><div class="rarity">${c.rarity}</div><div class="small">${(c.image)?`<img class="photo smallphoto" src="${c.image}" onerror="this.style.display='none'">`:"📷 PHOTO SLOT — assets/config.js で画像を指定"}</div><div class="cardname">${c.name}</div><div class="small">💗+${c.love} ⭐+${c.trust}</div></div>`).join(""):`<div class="box center"><h3>まだカードがありません</h3><p class="small">ストーリーやガチャで獲得できます。</p></div>`;
- $("gameContent").innerHTML=`<div class="box"><h2>💎カードコレクション</h2><p class="small">${S.cards.length}枚獲得</p></div><div class="cardgrid">${html}</div>`;
+ $("gameContent").innerHTML=`<div class="box"><h2>💎カードコレクション</h2><p class="small">${S.cards.length}枚獲得</p>${S.cards.some(c=>c.rarity==="SSR")?`<button class="gold" onclick="renderCardStory()">✨ SSR限定ストーリー</button>`:""}</div><div class="cardgrid">${html}</div>`;
+}
+
+
+function renderCardStory(){
+ const hasSSR=S.cards.some(c=>c.rarity==="SSR");
+ if(!hasSSR){toast("SSRカードを獲得すると解放されます");return}
+ useGameBGM("story");go("game");stats();setTab("tCard");
+ $("gameContent").innerHTML=`
+ <div class="box story"><div class="scene">SSR限定ストーリー</div>${memberPhotoHTML(S.member,"storyphoto")}
+ <h2>「この一枚だけの思い出」</h2>
+ <p>写真に残った瞬間を見つめながら、彼女が少し照れたように笑う。</p>
+ <p>「この日のこと、忘れないでね。私も大事に覚えておくから」</p></div>
+ <button onclick="S.love+=8;S.trust+=8;save();sfx('love');toast('💗+8 ⭐+8');renderCards()">💗思い出を大切にする</button>`;
 }
 
 function renderEvent(){
@@ -319,14 +342,31 @@ function showEnding(){ useGameBGM("end"); sfx("end");
  S.end=e[1];save();$("endEmoji").textContent=e[0];$("endTitle").textContent=e[1];$("endText").textContent=e[2];$("endResult").innerHTML=`💗親密度 ${S.love}　⭐信頼度 ${S.trust}<br>🃏カード ${S.cards.length}　🎤レッスン ${S.lessonCount}回`;go("end");
 }
 function replayRoute(){ setTab("tHome");
- S.love=0;S.trust=0;S.ap=30;S.coins=300;S.chapter=0;S.cards=[];S.lessonCount=0;S.messages=0;S.end="";save();renderHome();
+ S.love=0;S.trust=0;S.ap=30;S.coins=300;S.chapter=0;S.cards=[];S.lessonCount=0;S.messages=0;S.end="";S.choices={};S.routePoints=0;save();renderHome();
 }
 function save(){try{localStorage.setItem("stu48koi_complete_v4",JSON.stringify(S));localStorage.setItem("stuName",S.player)}catch(e){}}
 function loadSave(){
  try{const x=localStorage.getItem("stu48koi_complete_v4");if(!x){toast("セーブデータがありません");return}S=JSON.parse(x);if(S.end)showEnding();else renderHome()}catch(e){toast("読み込みに失敗しました")}
 }
+
+function saveSlot(n){
+ try{localStorage.setItem("stu48koi_slot_"+n,JSON.stringify(S));toast("セーブスロット "+n+" に保存しました")}
+ catch(e){toast("保存できませんでした")}
+}
+function loadSlot(n){
+ try{
+  const x=localStorage.getItem("stu48koi_slot_"+n);
+  if(!x){toast("スロット "+n+" は空です");return}
+  S=JSON.parse(x);save();closeModal();S.end?showEnding():renderHome();toast("スロット "+n+" を読み込みました");
+ }catch(e){toast("読み込みに失敗しました")}
+}
+
 function openHelp(){showModal(`<h2>遊び方</h2><div class="box">📖 <b>物語</b><br>全10話。選択肢で親密度・信頼度が変化します。</div><div class="box">🎤 <b>レッスン</b><br>APを消費して親密度・信頼度を育てます。</div><div class="box">🃏 <b>ガチャ</b><br>R / SR / SSRカードを集めます。</div><div class="box">💬 <b>メッセージ</b><br>コインを使って返信できます。</div><div class="box">💖 <b>エンディング</b><br>親密度・信頼度によって3種類に分岐します。</div>`)}
-function openSettings(){showModal(`<h2>設定</h2><label class="small">主人公名</label><input id="pname" maxlength="12" value="${S.player}"><button onclick="setPlayerName()">保存</button><p class="small">セーブはこのSafariのローカルストレージに保存されます。</p><button class="light" onclick="resetAll()">セーブデータ削除</button>`)}
+function openSettings(){showModal(`<h2>設定</h2><label class="small">主人公名</label><input id="pname" maxlength="12" value="${S.player}"><button onclick="setPlayerName()">保存</button><p class="small">自動セーブとは別に、3つのセーブスロットへ保存できます。</p>
+ <div class="grid3"><button onclick="saveSlot(1)">S1 保存</button><button onclick="saveSlot(2)">S2 保存</button><button onclick="saveSlot(3)">S3 保存</button></div>
+ <div class="grid3"><button class="light" onclick="loadSlot(1)">S1 読込</button><button class="light" onclick="loadSlot(2)">S2 読込</button><button class="light" onclick="loadSlot(3)">S3 読込</button></div>
+ <button class="dark" onclick="renderMembers();closeModal();go('select')">🔁 別メンバーを攻略</button>
+ <button class="light" onclick="resetAll()">セーブデータ削除</button>`)}
 function setPlayerName(){S.player=$("pname").value.trim()||"あなた";localStorage.setItem("stuName",S.player);save();toast("主人公名を保存しました");closeModal()}
 function resetAll(){if(confirm("セーブデータを削除しますか？")){localStorage.removeItem("stu48koi_complete_v4");toast("削除しました");closeModal()}}
 function showModal(html){$("modalContent").innerHTML=html;$("modal").classList.add("on")}
@@ -503,11 +543,13 @@ function routeProfile(){return ROUTES[mem()[0]]||{flavor:"瀬戸内で少しず�
 */
 const ASSETS={
   music:{
-    title:"assets/music/title.mp3", home:"assets/music/home.mp3",
-    story:"assets/music/story.mp3", member:"assets/music/member.mp3",
-    live:"assets/music/live.mp3", end:"assets/music/ending.mp3"
+    title:"assets/music/title.wav", home:"assets/music/home.wav",
+    story:"assets/music/story.wav", member:"assets/music/member.wav",
+    live:"assets/music/live.wav", end:"assets/music/ending.wav"
   },
-  members:{}
+  members:{
+    5:{image:"assets/members/yuka.jpg"}
+  }
 };
 let externalAudio=null, externalAudioPath="";
 function memberImage(i){
